@@ -1,0 +1,42 @@
+.task-manager {
+    width: 55%; 
+    max-width: 500px;
+}
+.button {
+    font-size: 1rem;
+    padding: 0.3rem 0.6rem;
+    border: none;
+    color: white;
+    border-radius: 0.5rem;
+}
+
+.primary {
+    background-color: rgb(89, 155, 253);
+}
+
+.primary:hover {
+    background-color: rgb(102, 163, 255);
+}
+
+.primary:active {
+    background-color: rgb(59, 137, 255);
+}
+
+.delete {
+    background-color: rgb(253, 89, 92);
+
+}
+
+.delete:hover {
+    background-color: rgb(255, 128, 128);
+}
+
+.delete:active {
+    background-color: rgb(167, 44, 44);
+}
+
+.footer {
+    display: flex; 
+    justify-content: space-between; 
+    margin-top: 3rem;
+}

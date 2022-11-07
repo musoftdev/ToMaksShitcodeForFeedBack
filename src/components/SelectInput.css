@@ -1,0 +1,36 @@
+input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+
+    border: 2px solid black;
+    border-radius: 0.6rem;
+    margin-bottom: 0.5rem;
+
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    padding: 0.5rem;
+    border: 2px solid black;
+    border-radius: 0.6rem;
+
+    position: absolute;
+    width: 100%;
+    top: 0
+
+}
+
+li {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+}
+
+li:hover {
+    background-color: rgb(211, 211, 211);
+}
+
+.inputItems {
+    position: relative;
+}
