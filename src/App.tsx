@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { TaskList } from "./TaskList";
-import { TasksProvider, TaskContext, TaskDispatchContext } from "./utilities/TaskProvider";
+import { TasksProvider, useTasks, useTasksDispatch } from "./utilities/TaskProvider";
 import "./styles/App.css";
 
 
@@ -25,7 +25,7 @@ const App = () => {
 const AddTask = () => {
 
     const [newTask, setNewTask] = useState("")
-    const dispatch = useContext(TaskDispatchContext)!
+    const dispatch = useTasksDispatch()
 
     return (
         <div className="add-task-header">
@@ -51,8 +51,8 @@ const AddTask = () => {
 
 const TaskFooter = () => {
 
-    const tasks = useContext(TaskContext)!
-    const dispatch = useContext(TaskDispatchContext)!
+    const tasks = useTasks()
+    const dispatch = useTasksDispatch()
 
     const completedTasks = tasks.filter((task) => task.done).length
 

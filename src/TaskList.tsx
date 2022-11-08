@@ -1,13 +1,13 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Task } from "./utilities/TaskReducer";
-import { TaskContext, TaskDispatchContext } from "./utilities/TaskProvider";
+import { useTasks, useTasksDispatch } from "./utilities/TaskProvider";
 import "./styles/TaskList.css"
 
 export const TaskList = () => {    
 
-    const tasks = useContext(TaskContext)!
+    const tasks = useTasks()
 
-    const tasksList = tasks?.map((task) => {
+    const tasksList = tasks.map((task) => {
         return (
             <TaskRow key={task.id} task={task}/>
         )
@@ -29,8 +29,7 @@ type TaskRowProps = {
 const TaskRow = ({task} : TaskRowProps )=> {
 
     const [editMode, setEditMode] = useState(false)
-    const dispatch = useContext(TaskDispatchContext)!
-
+    const dispatch = useTasksDispatch()
     return (
         <div className = "task-row">
                 
@@ -68,8 +67,7 @@ type TaskEditorProps = {
 const TaskEditor = ({task, setEditMode}: TaskEditorProps) => {
 
     const [editedText, setEditedText] = useState(task.text)
-    const dispatch = useContext(TaskDispatchContext)!
-
+    const dispatch = useTasksDispatch()
     return (
         <div className="task-row-elements">
             <input
