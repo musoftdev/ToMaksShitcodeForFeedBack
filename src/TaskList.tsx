@@ -1,24 +1,15 @@
-import { useState } from "react"
+import { useState, useContext } from "react";
 import { Task } from "./utilities/TaskReducer";
+import { TaskContext, TaskDispatchContext } from "./utilities/TaskProvider";
 import "./styles/TaskList.css"
 
-type TaskListProps = {
-    tasks: Task[],
-    changeTask: (task: Task) => void,
-    deleteTask: (id: number) => void
-}
+export const TaskList = () => {    
 
-
-export const TaskList = ({tasks, changeTask, deleteTask} : TaskListProps) => {    
+    const tasks = useContext(TaskContext)!
 
     const tasksList = tasks?.map((task) => {
         return (
-            <TaskRow
-                key = {task.id} 
-                task = {task}
-                changeTask = {changeTask}
-                deleteTask = {deleteTask}
-            />
+            <TaskRow key={task.id} task={task}/>
         )
     })
 
@@ -32,14 +23,13 @@ export const TaskList = ({tasks, changeTask, deleteTask} : TaskListProps) => {
 
 type TaskRowProps = {
     task: Task,
-    changeTask: (task: Task) => void,
-    deleteTask: (id: number) => void
 }
 
 
-const TaskRow = ({task, changeTask, deleteTask} : TaskRowProps )=> {
+const TaskRow = ({task} : TaskRowProps )=> {
 
     const [editMode, setEditMode] = useState(false)
+    const dispatch = useContext(TaskDispatchContext)!
 
     return (
         <div className = "task-row">
@@ -49,14 +39,14 @@ const TaskRow = ({task, changeTask, deleteTask} : TaskRowProps )=> {
                     type = "checkbox"
                     checked = {task.done} 
                     onChange = {(e) => {
-                        changeTask({...task, done: e.target.checked})}}/>
+                        dispatch({type: "edit-task", task: {...task, done: e.target.checked}})
+                    }} />
 
                 {editMode ? ( 
                     <TaskEditor 
                         task={task} 
-                        setEditMode = {setEditMode} 
-                        changeTask = {changeTask}
-                        deleteTask = {deleteTask}/> 
+                        setEditMode = {setEditMode}
+                    />
                 ) : (
                     <div className="task-row-elements">
                         <span>{task.text}</span> 
@@ -72,14 +62,13 @@ const TaskRow = ({task, changeTask, deleteTask} : TaskRowProps )=> {
 
 type TaskEditorProps = {
     task: Task,
-    changeTask: (task: Task) => void,
     setEditMode: (val: boolean) => void
-    deleteTask: (id: number) => void
 }
 
-const TaskEditor = ({task, setEditMode, changeTask, deleteTask}: TaskEditorProps) => {
+const TaskEditor = ({task, setEditMode}: TaskEditorProps) => {
 
     const [editedText, setEditedText] = useState(task.text)
+    const dispatch = useContext(TaskDispatchContext)!
 
     return (
         <div className="task-row-elements">
@@ -92,7 +81,7 @@ const TaskEditor = ({task, setEditMode, changeTask, deleteTask}: TaskEditorProps
             <button
                 className = "button primary" 
                 onClick={() =>  {
-                    changeTask({...task, text: editedText})
+                    dispatch({type: "edit-task", task: {...task, text: editedText}})
                     setEditMode(false)
                 }}>
                 Save
@@ -100,7 +89,7 @@ const TaskEditor = ({task, setEditMode, changeTask, deleteTask}: TaskEditorProps
             
             <button 
                 className = "button delete" 
-                onClick = {() => deleteTask(task.id)}>
+                onClick = {() => dispatch({type: "delete-task", id: task.id})}>
                 Delete
             </button>
 

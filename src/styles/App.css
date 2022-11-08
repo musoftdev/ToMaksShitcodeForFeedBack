@@ -10,6 +10,16 @@
     border-radius: 0.5rem;
 }
 
+.add-task-header {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.add-task-input {
+    flex-grow: 1
+}
+
 .primary {
     background-color: rgb(89, 155, 253);
 }

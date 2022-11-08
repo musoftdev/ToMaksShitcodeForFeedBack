@@ -1,69 +1,36 @@
-import { useReducer, useState } from "react"
+import { useContext, useState } from "react";
 import { TaskList } from "./TaskList";
-import { taskReducer, initialTasks, Task } from "./utilities/TaskReducer";
-import "./styles/App.css"
+import { TasksProvider, TaskContext, TaskDispatchContext } from "./utilities/TaskProvider";
+import "./styles/App.css";
 
 
 const App = () => {
 
-    const [tasks, dispatch] = useReducer(taskReducer, initialTasks)
-    const completedTasks = tasks.filter((task) => task.done).length
-
-    const addNew = (taskText: string) => {
-        if (taskText.trim()) {
-            dispatch({type: "add-task", text: taskText})
-        }
-    }
-
-    const changeTask = (editedTask: Task) => {
-        dispatch({type: "edit-task", task: editedTask})
-    }
-
-    const deleteTask = (taskId: number) => {
-        dispatch({type: "delete-task", id: taskId})
-    }
-
-    const deleteCompletedTasks = () => {
-        dispatch({type: "delete-completed"})
-    } 
-
     return (
         <div className = "task-manager">
             
-            <h1>Task manager</h1>
+            <h1>Task manager v1</h1>
             
-            <AddTask addNew = {addNew}/>
-
-            <TaskList 
-                tasks = {tasks}
-                changeTask = {changeTask}
-                deleteTask = {deleteTask}
-            />
-
-            <div className = "footer">
-                <p>Completed {completedTasks} of {tasks.length}</p>
-                <button className = "button delete" onClick={deleteCompletedTasks}>
-                    Delete Completed
-                </button>
-            </div>
-            
-
+            <TasksProvider>
+                <AddTask />
+                <TaskList />
+                <TaskFooter />
+            </TasksProvider>
+                    
         </div>
     )
 }
 
-type AddTaskProp = {
-    addNew: (taskText: string) => void
-}
 
-const AddTask = ({addNew}: AddTaskProp) => {
+const AddTask = () => {
 
     const [newTask, setNewTask] = useState("")
+    const dispatch = useContext(TaskDispatchContext)!
 
     return (
-        <div style = {{display: "flex", gap: "1rem", marginTop: "1rem"}}>
+        <div className="add-task-header">
             <input
-                style = {{flex: "1"}}
+                className="add-task-input"
                 placeholder = "Add new task..."
                 value = {newTask}
                 onChange = {(e) => setNewTask(e.target.value)} 
@@ -72,9 +39,28 @@ const AddTask = ({addNew}: AddTaskProp) => {
             <button 
                 className = "button primary"
                 onClick={() => {
-                    addNew(newTask)
+                    if (newTask.trim()) {
+                        dispatch({type: "add-task", text: newTask})
+                    }
                     setNewTask("")}}>
                 Add
+            </button>
+        </div>
+    )
+}
+
+const TaskFooter = () => {
+
+    const tasks = useContext(TaskContext)!
+    const dispatch = useContext(TaskDispatchContext)!
+
+    const completedTasks = tasks.filter((task) => task.done).length
+
+    return (
+        <div className = "footer">
+            <p>Completed {completedTasks} of {tasks.length}</p>
+            <button className = "button delete" onClick={() => dispatch({type: "delete-completed"})}>
+                Delete Completed
             </button>
         </div>
     )
