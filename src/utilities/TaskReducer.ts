@@ -1,4 +1,3 @@
-
 export interface Task {
     id: number,
     text: string,
@@ -11,14 +10,14 @@ export const initialTasks: Task[] = [
     {id: 2, text: 'Lennon Wall pic', done: false},
   ];
 
-type ACTIONTYPE =
+export type TasksActionType =
   | { type: "add-task", text: string }
   | { type: "edit-task", task: Task }
   | { type: "delete-task", id: number }
   | { type: "delete-completed"}
 
 
-export const taskReducer = (state: Task[], action: ACTIONTYPE) => {
+export const taskReducer = (state: Task[], action: TasksActionType) => {
     
     switch (action.type) {
         case "add-task": {
